@@ -1,6 +1,7 @@
 package com.ifi.servlet;
 
 import com.ifi.controller.HelloController;
+import com.ifi.controller.PokemonTypeController;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -21,7 +22,7 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // System.out.println("Getting request for " + req.getRequestURI());
+        //System.out.println("Getting request for " + req.getRequestURI());
         var uri = req.getRequestURI();
 
         if(! uriMappings.containsKey(uri)){
@@ -62,11 +63,13 @@ public class DispatcherServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         // on enregistre notre controller au démarrage de la servlet
-//        this.registerController(HelloController.class);
+        this.registerController(PokemonTypeController.class);
     }
 
     protected void registerController(Class controllerClass){
         // System.out.println("Analysing class " + controllerClass.getName());
+
+        // checking that the class is a controller
         if (controllerClass.getAnnotation(Controller.class) == null) {
             throw new IllegalArgumentException();
         }

@@ -1,5 +1,6 @@
 package com.ifi.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifi.bo.PokemonType;
 import com.ifi.repository.PokemonTypeRepository;
 import com.ifi.servlet.Controller;
@@ -11,8 +12,8 @@ import java.util.Map;
 public class PokemonTypeController {
     private PokemonTypeRepository repository = new PokemonTypeRepository();
 
-    @RequestMapping(uri="/pokemons")
-    public PokemonType getPokemon(Map<String,String[]> parameters) throws Exception {
+    @RequestMapping(uri="/pokemon")
+    public String getPokemon(Map<String,String[]> parameters) throws Exception {
         /*  http://localhost:8080/pokemons?id=25
             http://localhost:8080/pokemons?id=145
             http://localhost:8080/pokemons?name=pikachu
@@ -24,9 +25,9 @@ public class PokemonTypeController {
                     throw new IllegalArgumentException("parameters should not be empty");
                 }
                 if ("id".equals(keyElem)) {
-                    return repository.findPokemonById(Integer.parseInt(parameters.get(keyElem)[0]));
+                    return new ObjectMapper().writeValueAsString(repository.findPokemonById(Integer.parseInt(parameters.get(keyElem)[0])));
                 } else if ("name".equals(keyElem)) {
-                    return repository.findPokemonByName(parameters.get(keyElem)[0]);
+                    return new ObjectMapper().writeValueAsString(repository.findPokemonByName(parameters.get(keyElem)[0]));
                 } else {
                     throw new IllegalArgumentException("unknown parameter");
                 }

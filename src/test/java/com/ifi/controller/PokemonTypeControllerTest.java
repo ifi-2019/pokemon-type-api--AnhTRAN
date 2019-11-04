@@ -1,5 +1,6 @@
 package com.ifi.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifi.bo.PokemonType;
 import com.ifi.repository.PokemonTypeRepository;
 import com.ifi.servlet.Controller;
@@ -51,7 +52,8 @@ class PokemonTypeControllerTest {
         when(pokemonRepository.findPokemonById(25)).thenReturn(pikachu);
 
         var parameters = Map.of("id", new String[]{"25"});
-        var pokemon = controller.getPokemon(parameters);
+        var objectMapper = new ObjectMapper();
+        var pokemon = objectMapper.readValue(controller.getPokemon(parameters), PokemonType.class);
         assertNotNull(pokemon);
         assertEquals(25, pokemon.getId());
         assertEquals("pikachu", pokemon.getName());
@@ -68,7 +70,8 @@ class PokemonTypeControllerTest {
         when(pokemonRepository.findPokemonByName("zapdos")).thenReturn(zapdos);
 
         var parameters = Map.of("name", new String[]{"zapdos"});
-        var pokemon = controller.getPokemon(parameters);
+        var objectMapper = new ObjectMapper();
+        var pokemon = objectMapper.readValue(controller.getPokemon(parameters), PokemonType.class);
         assertNotNull(pokemon);
         assertEquals(145, pokemon.getId());
         assertEquals("zapdos", pokemon.getName());
@@ -92,7 +95,7 @@ class PokemonTypeControllerTest {
                 getPokemonMethod.getAnnotation(RequestMapping.class);
 
         assertNotNull(requestMappingAnnotation);
-        assertEquals("/pokemons", requestMappingAnnotation.uri());
+        assertEquals("/pokemon", requestMappingAnnotation.uri());
     }
 
 }
