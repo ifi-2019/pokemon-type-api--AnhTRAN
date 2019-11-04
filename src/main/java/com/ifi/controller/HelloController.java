@@ -1,3 +1,8 @@
+package com.ifi.controller;
+
+import com.ifi.servlet.Controller;
+import com.ifi.servlet.RequestMapping;
+
 @Controller
 public class HelloController {
 
